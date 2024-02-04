@@ -26,7 +26,6 @@ public class MainController {
         if (uname.equals("") && pwd.equals("")) {
             return "Username or password cannot be empty!";
         }
-
         return "OK";
     }
 
