@@ -1,7 +1,6 @@
 package com.mamer.banking.services;
 
 import com.mamer.banking.db.DBConnection;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,16 +11,12 @@ import java.util.Map;
 
 public class UsersServices extends DBConnection {
 
-    private ArrayList<Map> arr;
-    public UsersServices() {
-        arr = new ArrayList<>();
-    }
+    public UsersServices() {}
 
-    public static void main(String[] args) {}
-
-    public ArrayList<Map> getData() {
+    public ArrayList<Map<String, String>> getData() {
         final String[] column = {"name"};
         final String query = "select * from users";
+        final ArrayList<Map<String, String>> arr = new ArrayList<>();
         try {
             Statement stmt = connect().createStatement();
             ResultSet rs = stmt.executeQuery(query);
@@ -60,5 +55,7 @@ public class UsersServices extends DBConnection {
 
         return 0;
     }
+
+    public static void main(String[] args) {}
 
 }
