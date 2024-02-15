@@ -22,7 +22,7 @@ public class Main extends Application {
         stage = primaryStage;
         final ViewModule viewModule = new ViewModule();
         primaryStage.setTitle("Login");
-        primaryStage.setScene(new Scene(viewModule.paymentDetailView, 600, 400));
+        primaryStage.setScene(new Scene(viewModule.mainView, 600, 400));
         primaryStage.show();
     }
 

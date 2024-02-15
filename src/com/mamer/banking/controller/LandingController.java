@@ -1,23 +1,36 @@
 package com.mamer.banking.controller;
 
 import com.mamer.banking.services.ProductServices;
+import com.mamer.banking.view.ViewModule;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import com.mamer.banking.view.ViewModule;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.ResourceBundle;
+import com.mamer.banking.Main;
 
 public class LandingController implements Initializable {
 
     public GridPane grid;
     public ProductServices productServices = new ProductServices();
 
-    public VBox productBox(String pTitle, String pPrice, String pStock) {
+    final ViewModule viewModule = new ViewModule();
+
+    public LandingController() throws Exception {
+
+    }
+
+    private final Main main = new Main();
+
+    public VBox productBox(String id, String pTitle, String pPrice, String pStock) {
         VBox vbox =  new VBox();
 
         vbox.setStyle("" +
@@ -35,6 +48,7 @@ public class LandingController implements Initializable {
         price.setText(pPrice);
         stock.setText(pStock);
         buyButton.setText("Buy");
+        buyButton.setOnAction(actionEvent -> buyProduct(id));
 
         vbox.getChildren().add(title);
         vbox.getChildren().add(price);
@@ -44,6 +58,13 @@ public class LandingController implements Initializable {
         return vbox;
     }
 
+    void buyProduct(String id) {
+        Stage stage = new Stage();
+        stage.setScene(new Scene(viewModule.checkoutView));
+        stage.show();
+        main.getStage().close();
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         ArrayList<Map<String, String>> products = productServices.getProducts();
@@ -51,10 +72,11 @@ public class LandingController implements Initializable {
         int hIdx = 0;
         int vIdx = 0;
         for (Map<String, String> prod : products) {
+            String id = prod.get("id");
             String title = prod.get("name");
             String price = "Rp."+prod.get("price");
             String stock = "Stock: "+prod.get("stock");
-            grid.add(productBox(title, price, stock), hIdx%5, vIdx);
+            grid.add(productBox(id, title, price, stock), hIdx%5, vIdx);
             hIdx++;
             if(hIdx%5 == 0) {
                 vIdx += 2;
