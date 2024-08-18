@@ -3,13 +3,28 @@ package com.mamer.banking.services;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+
 import com.mamer.banking.db.H2Connection;
+import com.mamer.banking.model.AuthModels;
 
 public class AuthServices extends H2Connection {
+    AuthModels authModels = new AuthModels();
+    String model;
+    String[] columns;
+
+    public AuthServices() {
+        model = authModels.table;
+        columns = authModels.columns;
+    }
+
+    public static void main(String[] args) {
+
+    }
 
     public int setLogin(String uname, int isLoggedIn) {
         try {
-            final String query = "update auth set isloggedin = ? where username = ?";
+            final String query = "update "+model+" set "+columns[0]+" = ? where username = ?";
             PreparedStatement stmt = connect().prepareStatement(query);
             stmt.setInt(1, isLoggedIn);
             stmt.setString(2, uname);
@@ -22,12 +37,11 @@ public class AuthServices extends H2Connection {
 
     }
 
-    public boolean isLoggedIn(String uname) {
+    public boolean isLoggedIn() {
         try {
-            final String query = "select isloggedin from auth where username = ?";
-            PreparedStatement stmt = connect().prepareStatement(query);
-            stmt.setString(1, uname);
-            ResultSet res = stmt.executeQuery();
+            final String query = "select isloggedin from auth";
+            Statement stmt = connect().createStatement();
+            ResultSet res = stmt.executeQuery(query);
             if (res.next()) {
                 return res.getBoolean(1);
             }

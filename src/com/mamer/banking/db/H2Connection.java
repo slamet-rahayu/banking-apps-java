@@ -14,7 +14,6 @@ public class H2Connection {
             String uname = "sa";
             String pwd = "sa";
             conn = DriverManager.getConnection(url, uname, pwd);
-            System.out.println("success");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }

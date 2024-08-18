@@ -1,7 +1,10 @@
 package com.mamer.banking.controller;
 
 import com.mamer.banking.services.ProductServices;
+import com.mamer.banking.services.StateService;
 import com.mamer.banking.view.ViewModule;
+
+
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -9,7 +12,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import com.mamer.banking.view.ViewModule;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -21,8 +23,7 @@ public class LandingController implements Initializable {
 
     public GridPane grid;
     public ProductServices productServices = new ProductServices();
-
-    final ViewModule viewModule = new ViewModule();
+    public StateService stateService = new StateService();
 
     public LandingController() throws Exception {
 
@@ -33,11 +34,9 @@ public class LandingController implements Initializable {
     public VBox productBox(String id, String pTitle, String pPrice, String pStock) {
         VBox vbox =  new VBox();
 
-        vbox.setStyle("" +
-                "-fx-border-color: black;" +
+        vbox.setStyle("-fx-border-color: black;" +
                 "-fx-border-radius: 10px;" +
-                "-fx-padding: 8px;" +
-                "");
+                "-fx-padding: 8px;");
 
         Label title = new Label();
         Label price = new Label();
@@ -48,7 +47,13 @@ public class LandingController implements Initializable {
         price.setText(pPrice);
         stock.setText(pStock);
         buyButton.setText("Buy");
-        buyButton.setOnAction(actionEvent -> buyProduct(id));
+        buyButton.setOnAction(actionEvent -> {
+            try {
+                buyProduct(id);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
 
         vbox.getChildren().add(title);
         vbox.getChildren().add(price);
@@ -58,7 +63,8 @@ public class LandingController implements Initializable {
         return vbox;
     }
 
-    void buyProduct(String id) {
+    void buyProduct(String id) throws Exception {
+        final ViewModule viewModule = new ViewModule();
         Stage stage = new Stage();
         stage.setScene(new Scene(viewModule.checkoutView));
         stage.show();
